@@ -12,8 +12,8 @@ data.dropna(inplace=True)
 
 # Feature representation
 # Create a feature matrix using review count, price, latitude, and longitude
-features = data[['review_count', 'price', 'latitude', 'longitude']]
-features['price'] = features['price'].astype(str)  # Convert price to string
+features = data[['review_count', 'price_bucket', 'latitude', 'longitude']]
+features['price_bucket'] = features['price_bucket'].astype(str)  # Convert price to string
 feature_matrix = features.values
 
 # Calculate cosine similarity
