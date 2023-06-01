@@ -4,7 +4,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
 # Load the dataset
-data = pd.read_csv('your_dataset.csv')
+data = pd.read_csv('01_MMla_with_reviews.csv')
 
 # Drop rows with missing values
 data.dropna(inplace=True)
