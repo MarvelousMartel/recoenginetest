@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
+import numpy as np
 
 # Load the dataset
 data = pd.read_csv('01_MMla_with_reviews.csv')
@@ -14,6 +15,9 @@ data.dropna(inplace=True)
 features = data[['review_count', 'price', 'latitude', 'longitude']]
 features['price'] = features['price'].astype(str)  # Convert price to string
 feature_matrix = features.values
+
+# Convert feature_matrix to a NumPy array
+feature_matrix = np.asarray(feature_matrix)
 
 # Calculate cosine similarity
 similarity_matrix = cosine_similarity(feature_matrix, feature_matrix)
