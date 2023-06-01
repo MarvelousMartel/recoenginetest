@@ -1,6 +1,7 @@
 import pandas as pd
 from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.preprocessing import OneHotEncoder
+import streamlit as st
 
 # Load the dataset
 data = pd.read_csv('01_MMla_with_reviews.csv')
@@ -20,6 +21,10 @@ similarity_matrix = cosine_similarity(feature_matrix, feature_matrix)
 
 # Define the function to get restaurant recommendations
 def get_recommendations(restaurant_name, num_recommendations):
+    # Check if the restaurant name exists in the dataset
+    if restaurant_name not in data['name'].values:
+        return []
+    
     # Get the index of the restaurant with the given name
     index = data[data['name'] == restaurant_name].index[0]
     
@@ -36,10 +41,26 @@ def get_recommendations(restaurant_name, num_recommendations):
     top_indices = sorted_indices[:num_recommendations]
     recommendations = data.loc[top_indices, 'name']
     
-    return recommendations
+    return recommendations.tolist()
 
-# Example usage
-restaurant_name = 'Your Restaurant Name'
-num_recommendations = 5
-recommendations = get_recommendations(restaurant_name, num_recommendations)
-print(recommendations)
+# Streamlit app
+def main():
+    st.title("Restaurant Recommender Engine")
+    
+    # Input restaurant name
+    restaurant_name = st.selectbox("Select a restaurant:", data['name'].tolist())
+    num_recommendations = st.slider("Number of recommendations:", min_value=1, max_value=10, value=5)
+    
+    # Get recommendations
+    recommendations = get_recommendations(restaurant_name, num_recommendations)
+    
+    # Display recommendations
+    if recommendations:
+        st.subheader("Recommended Restaurants:")
+        for i, recommendation in enumerate(recommendations):
+            st.write(f"{i+1}. {recommendation}")
+    else:
+        st.write("No recommendations available for the selected restaurant.")
+
+if __name__ == '__main__':
+    main()
